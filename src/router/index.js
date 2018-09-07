@@ -6,14 +6,14 @@ import { createBottomTabNavigator } from 'react-navigation'
 // ionicons.com选图标
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import List from '../views/list'
-import Make from '../views/make'
-import More from '../views/more'
+import List from '../views/list/'
+import Record from '../views/record/'
+import Setting from '../views/setting/'
 
 const data = {
-	List: { icon: 'videocam', label: '狗狗' },
-	Make: { icon: 'recording', label: '配音' },
-	More: { icon: 'more', label: '更多' }
+	List: { icon: 'aperture', label: '狗狗' },
+	Record: { icon: 'microphone', label: '配音' },
+	Setting: { icon: 'settings', label: '设置' }
 }
 
 const StacksInTabs = createBottomTabNavigator(
@@ -22,19 +22,16 @@ const StacksInTabs = createBottomTabNavigator(
 			screen: List,
 			path: '/list'
 		},
-		Make: {
-			screen: Make,
-			path: '/make'
+		Record: {
+			screen: Record,
+			path: '/record'
 		},
-		More: {
-			screen: More,
-			path: '/more'
+		Setting: {
+			screen: Setting,
+			path: '/setting'
 		}
 	},
 	{
-		tabBarOptions: {
-			showLabel: true
-		},
 		// 初始路由
 		initialRouteName: 'List',
 		// 路由的其他配置(meta)
@@ -70,7 +67,8 @@ const StacksInTabs = createBottomTabNavigator(
 		tabBarPosition: 'bottom',
 		tabBarOptions: {
 			activeTintColor: 'tomato',
-			inactiveTintColor: 'gray'
+			inactiveTintColor: 'gray',
+			showLabel: false // 不展示label
 		},
 		animationEnabled: false,
 		swipeEnabled: false

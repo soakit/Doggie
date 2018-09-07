@@ -1,10 +1,13 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+
+import Header from '../../components/header'
+
 class MakeScreen extends React.Component {
 	render() {
 		return (
-			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<Text>Make Screen</Text>
+			<View>
+				<Header title="配音" />
 			</View>
 		)
 	}
