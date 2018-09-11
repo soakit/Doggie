@@ -1,8 +1,8 @@
 import React from 'react'
+import Dimensions from 'Dimensions'
 import { View, Text, Image, TouchableHighlight } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import Dimensions from 'Dimensions'
 const { width } = Dimensions.get('window')
 
 const styles = {
@@ -55,14 +55,14 @@ const styles = {
 	},
 	icon: {
 		fontSize: 22,
-		color: '#333'
+		color: 'tomato'
 	}
 }
 
 const Item = props => {
-	const { item } = props
+	const { item, onItemPress } = props
 	return (
-		<TouchableHighlight>
+		<TouchableHighlight onPress={onItemPress} underlayColor="#eee">
 			<View style={styles.item}>
 				<Text style={styles.title}>{item.title}</Text>
 				<View>
@@ -73,7 +73,7 @@ const Item = props => {
 				</View>
 				<View style={styles.footer}>
 					<View style={styles.handleBox}>
-						<Icon name="ios-heart" style={styles.icon} />
+						<Icon name="ios-heart-empty" style={styles.icon} />
 						<Text style={styles.handleText}>喜欢</Text>
 					</View>
 					<View style={styles.handleBox}>

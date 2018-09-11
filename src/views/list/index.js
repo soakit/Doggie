@@ -1,12 +1,17 @@
 import React from 'react'
-import { View, Text, FlatList, StyleSheet, ListView } from 'react-native'
+import {
+	View,
+	Text,
+	FlatList,
+	ActivityIndicator,
+	RefreshControl
+} from 'react-native'
 
 import Header from '../../components/header'
 import ListItem from './components/listItem'
 
 import api from '../../utils/api'
 import Mock from 'mockjs'
-
 
 // 缓存的数据
 const cacheResult = {
@@ -21,23 +26,15 @@ class ListScreen extends React.Component {
 		this.state = {
 			dataSource: [],
 			isMoreLoading: false, // 是否正在加载更多数据
-			isRefreshing: false, // 是否正在刷新
-			isLike: false,
-
-			progress: 0
+			isRefreshing: false // 是否正在刷新
 		}
 	}
 
-	static defaultProps = {
-		uri_api: 'http://rap.taobao.org/mockjs/4230/api/creations?accessToken=abc',
-		like_api: 'http://rap.taobao.org/mockjs/4230/like?up=123&accessToken=321'
-	}
-
 	componentDidMount() {
-		this.initData(1)
+		this.fetchData(1)
 	}
 
-	initData = page => {
+	fetchData = page => {
 		if (page !== 0) {
 			// 如果page不等于0，说明不是下拉刷新，只设置加载更多就行了
 			this.setState({
@@ -84,24 +81,21 @@ class ListScreen extends React.Component {
 					item = item.concat(data.data) // item里面追加新加载的数据。
 					cacheResult.nextPage += 1
 				} else {
-					item = data.data
+					item = data.data.concat(item)
 				}
 				cacheResult.items = item // cacheResult里面放着所有加载的数据
 				cacheResult.total = data.total
-				console.log(cacheResult)
-				setTimeout(() => {
-					if (page !== 0) {
-						this.setState({
-							isMoreLoading: false,
-							dataSource: cacheResult.items
-						})
-					} else {
-						this.setState({
-							isRefreshing: false,
-							dataSource: cacheResult.items
-						})
-					}
-				}, 300)
+				if (page !== 0) {
+					this.setState({
+						isMoreLoading: false,
+						dataSource: cacheResult.items
+					})
+				} else {
+					this.setState({
+						isRefreshing: false,
+						dataSource: cacheResult.items
+					})
+				}
 			})
 			.catch(error => {
 				if (page !== 0) {
@@ -117,7 +111,45 @@ class ListScreen extends React.Component {
 			})
 	}
 
-	_keyExtractor = (item) => item._id;
+	_keyExtractor = item => item._id
+
+	_onItemPress = () => {
+		// TODO:
+		console.log(1)
+	}
+
+	hasMore() {
+		return (
+			cacheResult.total !== 0 && cacheResult.items.length !== cacheResult.total
+		)
+	}
+
+	_fetchMoreData = () => {
+		if (!this.hasMore() || this.state.isMoreLoading) {
+			return
+		}
+		this.fetchData(cacheResult.nextPage)
+	}
+
+	_onRefresh = () => {
+		if (this.state.isRefreshing) {
+			return
+		}
+		// TODO: 下拉刷新时传page: 0，同时要有标志
+		this.fetchData(0)
+	}
+
+	_renderFooter = () => {
+		if (!this.hasMore() && cacheResult.items.length) {
+			return (
+				<View style={styles.loadingMore}>
+					<Text style={styles.loadingText}>没有更多了</Text>
+				</View>
+			)
+		}
+
+		return <ActivityIndicator style={styles.loadingMore} />
+	}
 
 	render() {
 		return (
@@ -126,8 +158,22 @@ class ListScreen extends React.Component {
 				<FlatList
 					style={styles.listWrap}
 					data={this.state.dataSource}
-					keyExtractor={this._keyExtractor}
-					renderItem={({ item }) => <ListItem item={item} />}
+					keyExtractor={this._keyExtractor} // key, 唯一性字段
+					onEndReached={this._fetchMoreData} // 到达底部
+					onEndReachedThreshold={20} // 离底部20时
+					ListFooterComponent={this._renderFooter} // 底部控件
+					showsVerticalScrollIndicator={false} // 不显示竖向滚动条
+					refreshControl={
+						<RefreshControl
+							refreshing={this.state.isRefreshing}
+							onRefresh={this._onRefresh}
+							tintColor="#ff6600"
+							title="拼命加载中..."
+						/>
+					}
+					renderItem={({ item }) => (
+						<ListItem item={item} onItemPress={this._onItemPress} onE />
+					)}
 				/>
 			</View>
 		)
@@ -142,6 +188,13 @@ const styles = {
 		padding: 10,
 		fontSize: 18,
 		height: 44
+	},
+	loadingMore: {
+		marginVertical: 20
+	},
+	loadingText: {
+		color: '#777',
+		textAlign: 'center'
 	}
 }
 
