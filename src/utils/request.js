@@ -6,7 +6,7 @@
 
 var queryString = require('query-string')
 var _ = require('lodash')
-var conf = require('./conf')
+var conf = require('./api')
 var Mock = require('mockjs')
 var request = {}
 

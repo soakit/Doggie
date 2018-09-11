@@ -12,20 +12,17 @@ module.exports = {
 			'Content-Type': 'application/json'
 		}
 	},
-	api: {
-		base: 'http://rap.taobao.org/mockjs/15752/',
-		// base:'http://192.168.0.12:3000/',
-		index: 'init', //首页
-		like: 'like', //点赞
-		comments: 'pinglun', //评论
-		sendComments: 'submit', //发送评论
-		//-------------user-------------//
-		login: 'api/u/verify', //验证(登录)
-		getVerityCode: 'api/u/signup', //登录(获取验证码)
-		signature: 'api/signature', //生成签名
-		update: 'api/u/update', //用户资料更新
-		video: 'api/u/video' //上传视频信息到服务器
-	},
+
+	base:'http://10.17.80.59:3000',
+	list: '/api/creations',
+
+	//-------------user-------------//
+	login: '/api/u/verify', // 验证(登录)
+	getVerityCode: '/api/u/signup', // 登录(获取验证码)
+	signature: '/api/signature', // 生成签名
+	update: '/api/u/update', // 用户资料更新
+	video: '/api/u/video', // 上传视频信息到服务器
+
 	cloudinary: {
 		cloud_name: 'deq99znbe',
 		api_key: '132214329484465',
