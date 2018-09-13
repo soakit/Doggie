@@ -33,6 +33,7 @@ module.exports = {
 		audio: 'https://api.cloudinary.com/v1_1/deq99znbe/audio/upload'
 	},
 	qiniu: {
-		upload: 'http://upload.qiniu.com'
+		upload: 'http://upload.qiniu.com/',
+    	picOrigin: 'http://orbgcblbo.bkt.clouddn.com'
 	}
 }

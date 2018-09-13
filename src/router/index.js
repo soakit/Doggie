@@ -33,7 +33,7 @@ const StacksInTabs = createBottomTabNavigator(
 	},
 	{
 		// 初始路由
-		initialRouteName: 'List',
+		initialRouteName: 'Record',
 		// 路由的其他配置(meta)
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ tintColor }) => {
